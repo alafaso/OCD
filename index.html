@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>It Was Never About Being Tidy — OCD, in Data</title>
+  <meta name="description" content="A data story about OCD, told through the first 100 records of an OCD patient dataset. Made with p5.js.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="brand" href="#top">not just tidy<span class="brand-dot">.</span></a>
+    <div class="nav-links">
+      <a href="#the-100">The 100</a>
+      <a href="#the-loop">The loop</a>
+      <a href="#severity">Severity</a>
+      <a href="#years">Years</a>
+      <a href="#alone">Alone</a>
+      <a href="#why">Why</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div id="hero-canvas" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="overline">A data story · the first 100 records · an OCD patient dataset</p>
+      <h1>It was never<br>about being tidy.</h1>
+      <p class="lede">OCD may be the most trivialized diagnosis in everyday language &mdash; a word we reach for when a desk is neat or a closet is color-coded. This page follows <strong>100 real patients</strong> from a dataset collected at a psychiatrist's office. Their data tells a different story: not a quirk, but a disorder that can shape decades of a life.</p>
+      <p class="note">content note: this page discusses intrusive thoughts and mental illness</p>
+      <p class="cue">meet the 100 <span class="arrow">&darr;</span></p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ 01 THE 100 ============ -->
+    <section id="the-100" class="section reveal">
+      <p class="overline">01 &middot; the people</p>
+      <h2>Meet the 100.</h2>
+      <p class="body">Every dot is one patient &mdash; <strong><span data-stat="age-min"></span> to <span data-stat="age-max"></span> years old</strong>, each with a file: an age, a family, an obsession, a compulsion, a number on a severity scale. Hover a dot to meet someone. Toggle the lenses to see the same hundred people through different frames. Any one of these dots could be me.</p>
+      <div class="grid-layout">
+        <div id="grid-canvas" class="canvas-box" data-vis="grid"></div>
+        <aside class="grid-side">
+          <div class="modes" role="group" aria-label="Color the patients by">
+            <button class="mode-btn active" data-mode="gender">gender</button>
+            <button class="mode-btn" data-mode="obsession">obsession</button>
+            <button class="mode-btn" data-mode="compulsion">compulsion</button>
+            <button class="mode-btn" data-mode="comorbidity">comorbidity</button>
+          </div>
+          <div id="grid-legend" class="legend"></div>
+          <div id="patient-panel" class="panel">
+            <h4>One hundred files</h4>
+            <p class="panel-hint">Hover a dot &mdash; or tap one &mdash; to open a patient's file. Dot size = age.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ 02 THE LOOP ============ -->
+    <section id="the-loop" class="section reveal">
+      <p class="overline">02 &middot; what it looks like</p>
+      <h2>It's not cleaning. It's a loop.</h2>
+      <p class="body">Ask someone with OCD what it feels like, and you won't hear &ldquo;I like a clean kitchen.&rdquo; You'll hear a loop: an intrusive thought arrives, the anxiety spikes, a ritual fires to shut it down &mdash; and the ritual never feels <em>finished</em>, so the loop runs again.</p>
+      <div id="echo-canvas" class="canvas-box echo-box" data-vis="echo" aria-label="An animation of overlapping intrusive thoughts and rituals"></div>
+      <p class="body">The dataset records each patient's dominant obsession and compulsion. Notice what is actually here: <strong>harm. religion. contamination. hoarding. symmetry.</strong> There is no &ldquo;enjoys tidiness&rdquo; category &mdash; symmetry is about dread and incompleteness, not aesthetics.</p>
+      <div class="bars">
+        <div>
+          <h3>Dominant obsession</h3>
+          <div id="obs-bars" class="canvas-box" data-vis="obs-bars"></div>
+        </div>
+        <div>
+          <h3>Dominant compulsion</h3>
+          <div id="comp-bars" class="canvas-box" data-vis="comp-bars"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 SEVERITY ============ -->
+    <section id="severity" class="section reveal">
+      <p class="overline">03 &middot; how bad does it get</p>
+      <h2>The scale they use goes 0 to 40.</h2>
+      <p class="body">Clinicians measure OCD severity with the Y-BOCS scale. Above 16 is <em>moderate</em>; above 24 is <em>severe</em>; above 32 is <em>extreme</em>. In these 100 patients, the average obsession score is <span data-stat="yobs"></span> and the average compulsion score is <span data-stat="ycomp"></span>. <strong><span data-stat="severe"></span> of the 100 score severe or extreme on at least one scale</strong> &mdash; and <span data-stat="modplus"></span> reach at least moderate. This is not &ldquo;a little quirky.&rdquo;</p>
+      <div id="scatter-canvas" class="canvas-box" data-vis="scatter"></div>
+      <p class="caption">Each dot is one patient. Color shows co-occurring diagnoses. Severity bands describe both axes. Hover for a patient's scores.</p>
+    </section>
+
+    <!-- ============ 04 YEARS ============ -->
+    <section id="years" class="section reveal">
+      <p class="overline">04 &middot; how long it lasts</p>
+      <h2>And it lasts years.</h2>
+      <p class="body">Each line is one patient's reported duration of obsessive-compulsive symptoms. The average is <strong><span data-stat="avg-years"></span> years</strong>. <strong><span data-stat="over10"></span> of the 100 have carried OCD for more than a decade</strong>; the longest, <span data-stat="max-years"></span> years. Imagine a loop you can't switch off for ten years. That is what &ldquo;it's just being tidy&rdquo; erases.</p>
+      <div id="duration-canvas" class="canvas-box" data-vis="duration"></div>
+      <p class="caption">Sorted shortest to longest. The amber line marks the average. Hover a line for that patient.</p>
+    </section>
+
+    <!-- ============ 05 ALONE ============ -->
+    <section id="alone" class="section reveal">
+      <p class="overline">05 &middot; comorbidity</p>
+      <h2>It rarely comes alone.</h2>
+      <p class="body">OCD travels with other conditions &mdash; and it is treated with real medicine and real therapy, not color-coded binders. Half of these 100 patients have depression on file, and half have a family history of OCD. The dataset was last updated three years ago; for the people in it, the loop was still running.</p>
+      <div class="stats">
+        <div class="stat"><div class="num" data-count="49" data-suffix="%">0%</div><div class="lbl">also diagnosed with depression</div></div>
+        <div class="stat"><div class="num" data-count="43" data-suffix="%">0%</div><div class="lbl">also diagnosed with an anxiety disorder</div></div>
+        <div class="stat"><div class="num" data-count="22" data-suffix="%">0%</div><div class="lbl">carrying both at once</div></div>
+        <div class="stat"><div class="num" data-count="50" data-suffix="%">0%</div><div class="lbl">have a family history of OCD</div></div>
+      </div>
+      <div id="med-chips" class="chips" aria-label="Medications recorded in the dataset"></div>
+    </section>
+
+    <!-- ============ 06 WHY ============ -->
+    <section id="why" class="section reveal">
+      <p class="overline">06 &middot; why I made this</p>
+      <h2>One of these points could be me.</h2>
+      <div class="essay">
+        <p>I chose this dataset because I have a close personal tie to it: I could be one of the data points. I have OCD too.</p>
+        <p>When people say &ldquo;I'm so OCD&rdquo; because they like an organized shelf, a disorder that can consume decades of a life gets compressed into a punchline. OCD is not needing things in order. It is intrusive thoughts you can't silence and rituals that never feel finished. It is hard to live with &mdash; and hard to overcome.</p>
+        <p>I made this page so the data &mdash; and the people behind it &mdash; don't get swept under the rug.</p>
+      </div>
+    </section>
+
+    <!-- ============ 07 CLOSING ============ -->
+    <section id="closing" class="section reveal">
+      <p class="overline">07 &middot; the point</p>
+      <h2>Say the whole word: <em>disorder</em>.</h2>
+      <p class="body">OCD is a serious, often lifelong condition &mdash; and it is treatable. Exposure and response prevention (ERP) therapy and medication genuinely help. If any of this felt familiar, for you or someone you love, it is worth asking for help. You are not &ldquo;a little OCD.&rdquo; And you are not alone.</p>
+      <div id="breathe-canvas" class="breathe-wrap" data-vis="breathe" aria-label="A slowly breathing circle"></div>
+      <p class="caption">a slower loop.</p>
+      <div class="resources">
+        <a href="https://iocdf.org" target="_blank" rel="noopener">International OCD Foundation &mdash; iocdf.org</a>
+        <a href="https://www.nami.org/help" target="_blank" rel="noopener">NAMI HelpLine &mdash; nami.org/help</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Data: OCD Patient Dataset, collected via a psychiatrist's office &mdash; the first 100 of 1,500 records &middot; built with p5.js &middot; Y-BOCS = Yale&ndash;Brown Obsessive Compulsive Scale &middot; made with respect for everyone the data represents.
+  </footer>
+
+  <div id="tooltip" role="status"></div>
+
+  <script src="data.js"></script>
+  <script src="sketch.js"></script>
+</body>
+</html>
