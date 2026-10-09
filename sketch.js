@@ -381,7 +381,7 @@
       if (!vis.echo) return;
       const t = p.millis() / 1000;
       p.textAlign(p.CENTER, p.CENTER);
-      p.textFont("Georgia, serif");
+      p.textFont("Avenir Next");
       p.textStyle(p.ITALIC);
       for (const wd of words) {
         let a;
@@ -438,7 +438,7 @@
         const hoverRow =
           p.mouseX >= 0 && p.mouseX <= w ? Math.floor((p.mouseY - 5) / ROW_H) : -1;
 
-        p.textFont("Inter, sans-serif");
+        p.textFont("Avenir Next");
         rows.forEach(([label, count], i) => {
           const y = 5 + i * ROW_H;
           const hovered = i === hoverRow;
@@ -480,140 +480,166 @@
   barsSketch("comp-bars", "compulsion", CO_COL);
 
   /* ============================================================
-     03 · SEVERITY — Y-BOCS scatter with severity bands
+     06 · THOUGHTS WALL — anonymous intrusive thoughts
+     Submitted thoughts stay in this browser (localStorage);
+     nothing is uploaded anywhere.
      ============================================================ */
 
-  new p5(function (p) {
-    const box = document.getElementById("scatter-canvas");
-    let w = 0, h = 0, t0 = null, hoverIdx = -1;
-    const L = 58, R = 112, T = 34, B = 50;
-    const BANDS = [
-      [0, 7, "subclinical"],
-      [8, 15, "mild"],
-      [16, 23, "moderate"],
-      [24, 31, "severe"],
-      [32, 40, "extreme"],
-    ];
-    const BAND_A = { subclinical: 0, mild: 5, moderate: 10, severe: 14, extreme: 18 };
+  const WALL_SEEDS = [
+    "am I a bad person?",
+    "what if I hurt someone I love?",
+    "did I really lock the door?",
+    "everyone can tell I'm faking",
+    "what did I touch?",
+    "count to 40. again.",
+    "what if I blurt it out?",
+    "the stove. the stove. the stove.",
+    "what if that bump in the road was someone?",
+    "did I say it wrong?",
+    "it has to feel right, or it isn't",
+    "what if I'm secretly dangerous?",
+    "they can see the thoughts",
+    "wash until it's clean. it's never clean.",
+    "what if I get sick from that?",
+    "keep it or lose something",
+    "one more check. just one.",
+    "what if this feeling never ends?",
+  ];
+  const WALL_KEY = "thoughts-wall-v1";
+  const WALL_MAX = 80;
 
-    const X = (v) => L + (w - L - R) * (v / 40);
-    const Y = (v) => T + (h - T - B) * (1 - v / 40);
+  function loadWallThoughts() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(WALL_KEY) || "[]");
+      if (!Array.isArray(raw)) return [];
+      return raw
+        .filter((s) => typeof s === "string" && s.trim())
+        .map((s) => s.trim().slice(0, 140))
+        .slice(-WALL_MAX);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const userThoughts = loadWallThoughts();
+  let wallRelease = null;
+
+  new p5(function (p) {
+    const box = document.getElementById("wall-canvas");
+    let w = 0, h = 0;
+    const items = [];
+
+    function place(txt, fromBottom) {
+      /* pick the emptiest of a few random spots so thoughts don't stack */
+      let bx = 0, by = 0, best = -1;
+      for (let a = 0; a < 14; a++) {
+        const x = p.random(60, Math.max(80, w - 60));
+        const y = fromBottom ? h + 26 : p.random(30, h - 30);
+        let near = Infinity;
+        for (const it of items) {
+          const d = p.dist(x, y, it.x, it.y);
+          if (d < near) near = d;
+        }
+        if (near > best) { best = near; bx = x; by = y; }
+        if (best > 130) break;
+      }
+      return { x: bx, y: by };
+    }
+
+    function release(txt, fresh) {
+      const t = txt.trim().slice(0, 140);
+      if (!t) return;
+      const pos = place(t, !!fresh);
+      items.push({
+        txt: t,
+        x: pos.x,
+        y: pos.y,
+        size: p.random(13.5, 21),
+        vy: p.random(0.1, 0.26),
+        seed: p.random(1000),
+        born: fresh ? p.millis() : -1,
+      });
+    }
+
+    wallRelease = (txt) => release(txt, true);
 
     p.setup = function () {
       w = box.clientWidth;
-      h = Math.min(560, Math.max(400, w * 0.55));
+      h = box.clientHeight || 340;
       p.createCanvas(w, h).parent(box);
+      for (const t of WALL_SEEDS) release(t, false);
+      for (const t of userThoughts) release(t, false);
     };
 
     p.windowResized = function () {
       w = box.clientWidth;
-      h = Math.min(560, Math.max(400, w * 0.55));
+      h = box.clientHeight || 340;
       p.resizeCanvas(w, h);
     };
 
     p.draw = function () {
       p.clear();
-      if (vis.scatter && t0 === null) t0 = p.millis();
-      const en = t0 === null ? 0 : easeOut(clamp01((p.millis() - t0) / 1200));
+      if (!vis.wall) return;
+      const t = p.millis();
+      p.textFont("Avenir Next");
+      p.textAlign(p.CENTER, p.CENTER);
+      p.textStyle(p.ITALIC);
 
-      /* severity bands (describe both axes) */
-      p.noStroke();
-      for (const [lo, hi, name] of BANDS) {
-        const a = BAND_A[name];
-        if (a > 0) {
-          p.fill(...COL.text, a);
-          p.rect(L, Y(hi), w - L - R, Y(lo) - Y(hi));
+      for (const it of items) {
+        if (!REDUCED) {
+          it.y -= it.vy;
+          it.x += (p.noise(it.seed, t * 0.00045) - 0.5) * 0.7;
+          if (it.y < -24) {
+            it.y = h + 24;
+            it.x = p.random(60, Math.max(80, w - 60));
+          }
         }
-      }
 
-      /* grid + ticks */
-      p.stroke(...COL.text, 26);
-      p.strokeWeight(1);
-      for (let v = 0; v <= 40; v += 8) {
-        p.line(X(v), T, X(v), h - B);
-        p.line(L, Y(v), w - R, Y(v));
-      }
-      p.textFont("Inter, sans-serif");
-      p.textSize(10.5);
-      p.noStroke();
-      p.fill(...COL.text, 120);
-      p.textAlign(p.CENTER, p.TOP);
-      for (let v = 0; v <= 40; v += 8) p.text(v, X(v), h - B + 8);
-      p.textAlign(p.RIGHT, p.CENTER);
-      for (let v = 0; v <= 40; v += 8) p.text(v, L - 8, Y(v));
-
-      /* band labels on the right */
-      p.textSize(10.5);
-      p.textAlign(p.LEFT, p.CENTER);
-      for (const [lo, hi, name] of BANDS) {
-        p.fill(...COL.text, 100);
-        p.text(name, w - R + 10, (Y(lo) + Y(hi)) / 2);
-      }
-
-      /* axis titles */
-      p.fill(...COL.text, 150);
-      p.textSize(11.5);
-      p.textAlign(p.CENTER, p.TOP);
-      p.text("Y-BOCS obsessions \u2192", L + (w - L - R) / 2, h - B + 24);
-      p.push();
-      p.translate(14, T + (h - T - B) / 2);
-      p.rotate(-p.HALF_PI);
-      p.text("Y-BOCS compulsions \u2192", 0, 0);
-      p.pop();
-
-      /* in-canvas legend */
-      p.textAlign(p.LEFT, p.CENTER);
-      p.textSize(10.5);
-      let lx = L + 4;
-      const leg = [
-        ["both dx", COL.coral],
-        ["one dx", COL.gold],
-        ["neither", COL.gray],
-      ];
-      for (const [label, c] of leg) {
-        p.noStroke();
-        p.fill(...c, 220);
-        p.circle(lx, 15, 9);
-        p.fill(...COL.text, 130);
-        p.text(label, lx + 8, 15);
-        lx += 8 + p.textWidth(label) + 22;
-      }
-
-      /* dots */
-      hoverIdx = -1;
-      for (let i = 0; i < N; i++) {
-        const pt = PATIENTS[i];
-        const x = X(pt.ybocsObs), y = Y(pt.ybocsComp);
-        const pop = easeOut(clamp01((p.millis() - t0 - i * 6) / 500));
-        const r = 5.5 * (t0 === null ? 0 : pop);
-        const d = p.dist(p.mouseX, p.mouseY, x, y);
-        const hovered = d < 9;
-        if (hovered) hoverIdx = i;
-        const c = comorbidColor(pt);
-        p.noStroke();
-        p.fill(...c, hovered ? 255 : 225);
-        p.circle(x, y, r * 2);
-        if (hovered) {
-          p.noFill();
-          p.stroke(...COL.text, 190);
-          p.strokeWeight(1.4);
-          p.circle(x, y, r * 2 + 9);
+        let alpha = 115;
+        let fresh = 0;
+        if (REDUCED) alpha = 95;
+        if (it.born >= 0) {
+          fresh = Math.max(0, 1 - (t - it.born) / 6000);
+          alpha = 130 + fresh * 125;
+          if (t - it.born > 9000) it.born = -1;
         }
-      }
 
-      p.cursor(hoverIdx >= 0 ? "pointer" : "arrow");
-      if (hoverIdx >= 0) {
-        const pt = PATIENTS[hoverIdx];
-        showTip(
-          p,
-          `<strong>Patient ${pt.id}</strong> · age ${pt.age}<br>` +
-            `obs ${pt.ybocsObs} · comp ${pt.ybocsComp}<br>` +
-            `depression: ${pt.depression} · anxiety: ${pt.anxiety}`
-        );
-      } else {
-        hideTip();
+        /* shrink long thoughts so they stay inside the wall */
+        let size = it.size;
+        const tw = p.textWidth(it.txt);
+        const maxW = w - 56;
+        if (tw > maxW) size = Math.max(11, (size * maxW) / tw);
+        p.textSize(size);
+
+        p.fill(...(fresh > 0 ? COL.coral : COL.text), alpha);
+        p.text(it.txt, it.x, it.y);
       }
+      p.textStyle(p.NORMAL);
     };
+  });
+
+  /* form wiring: counter, submit, persist */
+  const thoughtForm = document.getElementById("thought-form");
+  const thoughtInput = document.getElementById("thought-input");
+  const thoughtCount = document.getElementById("thought-count");
+
+  thoughtInput.addEventListener("input", () => {
+    thoughtCount.textContent = thoughtInput.value.length + " / 140";
+  });
+
+  thoughtForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const txt = thoughtInput.value.trim().slice(0, 140);
+    if (!txt) return;
+    userThoughts.push(txt);
+    try {
+      localStorage.setItem(WALL_KEY, JSON.stringify(userThoughts.slice(-WALL_MAX)));
+    } catch (err) {
+      /* storage unavailable (e.g. private mode) — the thought still joins the wall */
+    }
+    if (wallRelease) wallRelease(txt);
+    thoughtInput.value = "";
+    thoughtCount.textContent = "0 / 140";
   });
 
   /* ============================================================
@@ -646,9 +672,9 @@
     p.draw = function () {
       p.clear();
       if (vis.duration && t0 === null) t0 = p.millis();
-      const t = p.millis();
-      p.strokeCap(p.ROUND);
-      p.textFont("Inter, sans-serif");
+    const t = p.millis();
+    p.strokeCap(p.ROUND);
+    p.textFont("Avenir Next");
 
       /* ticks */
       p.noStroke();
@@ -746,7 +772,7 @@
       p.circle(S / 2, S / 2, 5);
 
       p.fill(...COL.text, 120);
-      p.textFont("Georgia, serif");
+      p.textFont("Avenir Next");
       p.textStyle(p.ITALIC);
       p.textSize(15);
       p.textAlign(p.CENTER, p.CENTER);
@@ -765,21 +791,9 @@
   const sum = (fn) => PATIENTS.reduce((s, pt) => s + fn(pt), 0);
   const ages = PATIENTS.map((pt) => pt.age);
   const durs = PATIENTS.map((pt) => pt.durMonths);
-  const yObsAvg = sum((pt) => pt.ybocsObs) / N;
-  const yCompAvg = sum((pt) => pt.ybocsComp) / N;
-  const severeOrExtreme = PATIENTS.filter(
-    (pt) => Math.max(pt.ybocsObs, pt.ybocsComp) >= 24
-  ).length;
-  const moderatePlus = PATIENTS.filter(
-    (pt) => Math.max(pt.ybocsObs, pt.ybocsComp) >= 16
-  ).length;
 
   setStat("age-min", Math.min(...ages));
   setStat("age-max", Math.max(...ages));
-  setStat("yobs", yObsAvg.toFixed(1));
-  setStat("ycomp", yCompAvg.toFixed(1));
-  setStat("severe", severeOrExtreme);
-  setStat("modplus", moderatePlus);
   setStat("avg-years", (sum((pt) => pt.durMonths) / N / 12).toFixed(1));
   setStat("over10", durs.filter((d) => d / 12 > 10).length);
   setStat("max-years", (Math.max(...durs) / 12).toFixed(1));

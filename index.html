@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>It Was Never About Being Tidy — OCD, in Data</title>
   <meta name="description" content="A data story about OCD, told through the first 100 records of an OCD patient dataset. Made with p5.js.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
 </head>
@@ -18,10 +15,10 @@
     <div class="nav-links">
       <a href="#the-100">The 100</a>
       <a href="#the-loop">The loop</a>
-      <a href="#severity">Severity</a>
       <a href="#years">Years</a>
       <a href="#alone">Alone</a>
       <a href="#why">Why</a>
+      <a href="#thoughts">Thoughts</a>
     </div>
   </nav>
 
@@ -81,27 +78,18 @@
       </div>
     </section>
 
-    <!-- ============ 03 SEVERITY ============ -->
-    <section id="severity" class="section reveal">
-      <p class="overline">03 &middot; how bad does it get</p>
-      <h2>The scale they use goes 0 to 40.</h2>
-      <p class="body">Clinicians measure OCD severity with the Y-BOCS scale. Above 16 is <em>moderate</em>; above 24 is <em>severe</em>; above 32 is <em>extreme</em>. In these 100 patients, the average obsession score is <span data-stat="yobs"></span> and the average compulsion score is <span data-stat="ycomp"></span>. <strong><span data-stat="severe"></span> of the 100 score severe or extreme on at least one scale</strong> &mdash; and <span data-stat="modplus"></span> reach at least moderate. This is not &ldquo;a little quirky.&rdquo;</p>
-      <div id="scatter-canvas" class="canvas-box" data-vis="scatter"></div>
-      <p class="caption">Each dot is one patient. Color shows co-occurring diagnoses. Severity bands describe both axes. Hover for a patient's scores.</p>
-    </section>
-
-    <!-- ============ 04 YEARS ============ -->
+    <!-- ============ 03 YEARS ============ -->
     <section id="years" class="section reveal">
-      <p class="overline">04 &middot; how long it lasts</p>
+      <p class="overline">03 &middot; how long it lasts</p>
       <h2>And it lasts years.</h2>
       <p class="body">Each line is one patient's reported duration of obsessive-compulsive symptoms. The average is <strong><span data-stat="avg-years"></span> years</strong>. <strong><span data-stat="over10"></span> of the 100 have carried OCD for more than a decade</strong>; the longest, <span data-stat="max-years"></span> years. Imagine a loop you can't switch off for ten years. That is what &ldquo;it's just being tidy&rdquo; erases.</p>
       <div id="duration-canvas" class="canvas-box" data-vis="duration"></div>
       <p class="caption">Sorted shortest to longest. The amber line marks the average. Hover a line for that patient.</p>
     </section>
 
-    <!-- ============ 05 ALONE ============ -->
+    <!-- ============ 04 ALONE ============ -->
     <section id="alone" class="section reveal">
-      <p class="overline">05 &middot; comorbidity</p>
+      <p class="overline">04 &middot; comorbidity</p>
       <h2>It rarely comes alone.</h2>
       <p class="body">OCD travels with other conditions &mdash; and it is treated with real medicine and real therapy, not color-coded binders. Half of these 100 patients have depression on file, and half have a family history of OCD. The dataset was last updated three years ago; for the people in it, the loop was still running.</p>
       <div class="stats">
@@ -113,15 +101,31 @@
       <div id="med-chips" class="chips" aria-label="Medications recorded in the dataset"></div>
     </section>
 
-    <!-- ============ 06 WHY ============ -->
+    <!-- ============ 05 WHY ============ -->
     <section id="why" class="section reveal">
-      <p class="overline">06 &middot; why I made this</p>
+      <p class="overline">05 &middot; why I made this</p>
       <h2>One of these points could be me.</h2>
       <div class="essay">
         <p>I chose this dataset because I have a close personal tie to it: I could be one of the data points. I have OCD too.</p>
         <p>When people say &ldquo;I'm so OCD&rdquo; because they like an organized shelf, a disorder that can consume decades of a life gets compressed into a punchline. OCD is not needing things in order. It is intrusive thoughts you can't silence and rituals that never feel finished. It is hard to live with &mdash; and hard to overcome.</p>
         <p>I made this page so the data &mdash; and the people behind it &mdash; don't get swept under the rug.</p>
       </div>
+    </section>
+
+    <!-- ============ 06 THOUGHTS ============ -->
+    <section id="thoughts" class="section reveal">
+      <p class="overline">06 &middot; your turn</p>
+      <h2>What loops in <em>your</em> head?</h2>
+      <p class="body">The thoughts above belong to the data. This space is for yours. Write down an intrusive thought &mdash; the kind that arrives uninvited &mdash; and release it into the wall below, where it will drift among everyone else's. <strong>No names, no accounts, nothing is uploaded:</strong> your words are stored only in your own browser, completely anonymous.</p>
+      <form id="thought-form" class="thought-form">
+        <textarea id="thought-input" maxlength="140" rows="3" placeholder="write the thought here&hellip; (140 characters max)" aria-label="Write an intrusive thought to release anonymously"></textarea>
+        <div class="thought-actions">
+          <span id="thought-count" class="thought-count">0 / 140</span>
+          <button type="submit" class="mode-btn thought-btn">release it &rarr;</button>
+        </div>
+      </form>
+      <div id="wall-canvas" class="canvas-box wall-box" data-vis="wall" aria-label="A slowly drifting wall of anonymous intrusive thoughts"></div>
+      <p class="caption">A living wall: seeded with the thoughts of the disorder, grown by whoever visits. Be kind &mdash; real people read these. Clearing your browser's site data empties your contributions from the wall.</p>
     </section>
 
     <!-- ============ 07 CLOSING ============ -->

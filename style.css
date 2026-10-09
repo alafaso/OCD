@@ -17,8 +17,8 @@
   --purple: #8f9bd4;
   --mauve: #b58bb5;
   --amber: #f2c14e;
-  --serif: "Fraunces", Georgia, "Times New Roman", serif;
-  --sans: "Inter", system-ui, -apple-system, sans-serif;
+  --serif: "Avenir Next", "Avenir";
+  --sans: "Avenir Next", "Avenir";
 }
 
 * { box-sizing: border-box; }
@@ -311,7 +311,7 @@ body {
   margin: 0 0 12px;
 }
 
-/* ---------- section 05: stats ---------- */
+/* ---------- section 04: stats ---------- */
 
 .stats {
   display: grid;
@@ -355,7 +355,7 @@ body {
 
 .chip strong { color: var(--coral); font-weight: 600; }
 
-/* ---------- section 06: essay ---------- */
+/* ---------- section 05: essay ---------- */
 
 .essay {
   border-left: 3px solid var(--coral);
@@ -373,6 +373,59 @@ body {
 }
 
 .essay p:last-child { margin-bottom: 0; }
+
+/* ---------- section 06: thoughts wall ---------- */
+
+.thought-form {
+  max-width: 760px;
+  margin-bottom: 30px;
+}
+
+.thought-form textarea {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 16px 18px;
+  resize: vertical;
+  min-height: 86px;
+  transition: border-color 0.15s ease;
+}
+
+.thought-form textarea::placeholder { color: var(--muted); font-style: italic; }
+
+.thought-form textarea:focus {
+  outline: none;
+  border-color: rgba(238, 123, 108, 0.6);
+}
+
+.thought-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.thought-count {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+
+.thought-btn {
+  color: var(--coral);
+  border-color: rgba(238, 123, 108, 0.6);
+  background: rgba(238, 123, 108, 0.1);
+}
+
+.thought-btn:hover { background: rgba(238, 123, 108, 0.2); }
+
+.wall-box { height: 340px; }
 
 /* ---------- section 07: closing ---------- */
 
