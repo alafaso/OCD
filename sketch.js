@@ -1,11 +1,11 @@
 /* ============================================================
-   It Was Never About Being Tidy — sketch.js
+   It Was Never About Being Tidy, sketch.js
    p5.js (instance mode) + plain JS for stats, tooltip, UI
    ============================================================ */
 
 (function () {
   if (typeof PATIENTS === "undefined" || !PATIENTS.length) {
-    console.error("data.js did not load — no patient data.");
+    console.error("data.js did not load, no patient data.");
     return;
   }
 
@@ -15,31 +15,31 @@
   const N = PATIENTS.length;
 
   const COL = {
-    coral: [238, 123, 108],
-    teal: [111, 179, 201],
-    sage: [127, 182, 158],
-    gold: [201, 161, 95],
-    purple: [143, 155, 212],
-    mauve: [181, 139, 181],
-    amber: [242, 193, 78],
-    gray: [96, 105, 120],
-    text: [233, 230, 223],
+    mint: [104, 228, 166],
+    mintGlow: [173, 245, 210],
+    mintSoft: [150, 234, 195],
+    mintFaint: [198, 244, 218],
+    mintMid: [66, 192, 130],
+    mintDeep: [46, 152, 100],
+    mintDark: [34, 116, 76],
+    mintDim: [92, 124, 106],
+    text: [220, 245, 231],
   };
 
   const OB_COL = {
-    "Contamination": COL.sage,
-    "Harm-related": COL.coral,
-    "Religious": COL.gold,
-    "Symmetry": COL.purple,
-    "Hoarding": COL.mauve,
+    "Contamination": COL.mintDeep,
+    "Harm-related": COL.mint,
+    "Religious": COL.mintSoft,
+    "Symmetry": COL.mintFaint,
+    "Hoarding": COL.mintDark,
   };
 
   const CO_COL = {
-    "Checking": COL.sage,
-    "Washing": COL.teal,
-    "Ordering": COL.gold,
-    "Praying": COL.mauve,
-    "Counting": COL.coral,
+    "Checking": COL.mintDeep,
+    "Washing": COL.mintMid,
+    "Ordering": COL.mintSoft,
+    "Praying": COL.mintDark,
+    "Counting": COL.mint,
   };
 
   const css = (a) => `rgb(${a[0]},${a[1]},${a[2]})`;
@@ -74,7 +74,7 @@
   function comorbidColor(pt) {
     const both = pt.depression === "Yes" && pt.anxiety === "Yes";
     const one = pt.depression === "Yes" || pt.anxiety === "Yes";
-    return both ? COL.coral : one ? COL.gold : COL.gray;
+    return both ? COL.mint : one ? COL.mintSoft : COL.mintDim;
   }
   function patientTip(pt) {
     return (
@@ -107,22 +107,22 @@
   }
 
   /* ============================================================
-     01 · THE 100 — interactive grid
+     01 · THE 100, interactive grid
      ============================================================ */
 
   let gridMode = "gender";
 
   const LEGENDS = {
     gender: [
-      ["female", COL.coral],
-      ["male", COL.teal],
+      ["female", COL.mint],
+      ["male", COL.mintMid],
     ],
     obsession: Object.entries(OB_COL).map(([k, v]) => [k.toLowerCase(), v]),
     compulsion: Object.entries(CO_COL).map(([k, v]) => [k.toLowerCase(), v]),
     comorbidity: [
-      ["depression + anxiety", COL.coral],
-      ["one of the two", COL.gold],
-      ["neither", COL.gray],
+      ["depression + anxiety", COL.mint],
+      ["one of the two", COL.mintSoft],
+      ["neither", COL.mintDim],
     ],
   };
 
@@ -159,7 +159,7 @@
     };
 
     function modeColor(pt) {
-      if (gridMode === "gender") return pt.gender === "Female" ? COL.coral : COL.teal;
+      if (gridMode === "gender") return pt.gender === "Female" ? COL.mint : COL.mintMid;
       if (gridMode === "obsession") return OB_COL[pt.obsession];
       if (gridMode === "compulsion") return CO_COL[pt.compulsion];
       return comorbidColor(pt);
@@ -238,7 +238,7 @@
   });
 
   /* ============================================================
-     HERO — 100 breathing dots
+     HERO, 100 breathing dots
      ============================================================ */
 
   new p5(function (p) {
@@ -313,9 +313,9 @@
         if (i === ME) {
           const r = 6 + 1.8 * Math.sin(t * 2.1);
           p.noStroke();
-          p.fill(...COL.amber, 40);
+          p.fill(...COL.mintGlow, 40);
           p.circle(pos[i][0], pos[i][1], r * 4);
-          p.fill(...COL.amber, 230);
+          p.fill(...COL.mint, 230);
           p.circle(pos[i][0], pos[i][1], r * 2);
         } else {
           p.noStroke();
@@ -327,14 +327,14 @@
   });
 
   /* ============================================================
-     02 · THE LOOP — echoing intrusive thoughts
+     02 · THE LOOP, echoing intrusive thoughts
      ============================================================ */
 
   const ECHO_WORDS = [
     "what if I hurt someone?",
     "did I really lock the door?",
     "it has to be even",
-    "contaminated — wash again",
+    "contaminated, wash again",
     "count to 40",
     "check it one more time",
     "pray until it feels right",
@@ -365,7 +365,7 @@
           size: p.random(15, 30),
           period: p.random(5.5, 9.5),
           offset: p.random(0, 8),
-          coral: txt.indexOf("again") >= 0,
+          accent: txt.indexOf("again") >= 0,
         });
       }
     };
@@ -392,8 +392,8 @@
           a = Math.sin(Math.PI * ph);
           wd.drawY = wd.y - ph * 16;
         }
-        const alpha = a * (wd.coral ? 130 : 105);
-        p.fill(...(wd.coral ? COL.coral : COL.text), alpha);
+        const alpha = a * (wd.accent ? 130 : 105);
+        p.fill(...(wd.accent ? COL.mint : COL.text), alpha);
         p.textSize(wd.size);
         p.text(wd.txt, wd.x, REDUCED ? wd.y : wd.drawY);
       }
@@ -480,7 +480,7 @@
   barsSketch("comp-bars", "compulsion", CO_COL);
 
   /* ============================================================
-     06 · THOUGHTS WALL — anonymous intrusive thoughts
+     06 · THOUGHTS WALL, anonymous intrusive thoughts
      Submitted thoughts stay in this browser (localStorage);
      nothing is uploaded anywhere.
      ============================================================ */
@@ -611,7 +611,7 @@
         if (tw > maxW) size = Math.max(11, (size * maxW) / tw);
         p.textSize(size);
 
-        p.fill(...(fresh > 0 ? COL.coral : COL.text), alpha);
+        p.fill(...(fresh > 0 ? COL.mint : COL.text), alpha);
         p.text(it.txt, it.x, it.y);
       }
       p.textStyle(p.NORMAL);
@@ -635,7 +635,7 @@
     try {
       localStorage.setItem(WALL_KEY, JSON.stringify(userThoughts.slice(-WALL_MAX)));
     } catch (err) {
-      /* storage unavailable (e.g. private mode) — the thought still joins the wall */
+      /* storage unavailable (e.g. private mode), the thought still joins the wall */
     }
     if (wallRelease) wallRelease(txt);
     thoughtInput.value = "";
@@ -643,7 +643,7 @@
   });
 
   /* ============================================================
-     04 · YEARS — 100 lines of duration
+     04 · YEARS, 100 lines of duration
      ============================================================ */
 
   new p5(function (p) {
@@ -690,11 +690,11 @@
       }
 
       /* average marker */
-      p.stroke(...COL.amber, 190);
+      p.stroke(...COL.mintGlow, 190);
       p.strokeWeight(1.5);
       p.line(yearX(avgYears), TOP - 8, yearX(avgYears), H - BOTTOM);
       p.noStroke();
-      p.fill(...COL.amber, 220);
+      p.fill(...COL.mintGlow, 220);
       p.textAlign(p.LEFT, p.BOTTOM);
       p.text("avg " + avgYears.toFixed(1) + " yrs", yearX(avgYears) + 8, TOP - 2);
 
@@ -716,7 +716,7 @@
           p.mouseX >= X0 &&
           p.mouseX <= X1();
         if (hovered) hoverIdx = i;
-        const c = p.lerpColor(p.color(...COL.sage), p.color(...COL.coral), yrs / maxYears);
+        const c = p.lerpColor(p.color(...COL.mintDeep), p.color(...COL.mint), yrs / maxYears);
         p.stroke(p.red(c), p.green(c), p.blue(c), hovered ? 255 : 215);
         p.line(X0, rowY(i), X0 + (X1() - X0) * (yrs / maxYears) * grow, rowY(i));
       }
@@ -737,7 +737,7 @@
   });
 
   /* ============================================================
-     07 · BREATHE — a slower loop
+     07 · BREATHE, a slower loop
      ============================================================ */
 
   new p5(function (p) {
@@ -761,14 +761,14 @@
         ph < 0.35 ? "breathe in" : ph < 0.5 ? "hold" : ph < 0.85 ? "breathe out" : "hold";
 
       p.noStroke();
-      p.fill(...COL.amber, 16);
+      p.fill(...COL.mintGlow, 16);
       p.circle(S / 2, S / 2, r * 2);
       p.noFill();
-      p.stroke(...COL.amber, 150);
+      p.stroke(...COL.mintGlow, 150);
       p.strokeWeight(1.6);
       p.circle(S / 2, S / 2, r * 2);
       p.noStroke();
-      p.fill(...COL.amber, 220);
+      p.fill(...COL.mintGlow, 220);
       p.circle(S / 2, S / 2, 5);
 
       p.fill(...COL.text, 120);

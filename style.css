@@ -1,24 +1,23 @@
 /* ============================================================
-   It Was Never About Being Tidy — style.css
+   It Was Never About Being Tidy, style.css
    ============================================================ */
 
 :root {
-  --bg: #0f1116;
-  --bg-soft: #141822;
-  --card: #171b26;
-  --line: rgba(233, 230, 223, 0.12);
-  --text: #e9e6df;
-  --soft: #c9c6be;
-  --muted: #a3a7b3;
-  --coral: #ee7b6c;
-  --teal: #6fb3c9;
-  --sage: #7fb69e;
-  --gold: #c9a15f;
-  --purple: #8f9bd4;
-  --mauve: #b58bb5;
-  --amber: #f2c14e;
-  --serif: "Avenir Next", "Avenir";
-  --sans: "Avenir Next", "Avenir";
+  --bg: #0b1511;
+  --bg-soft: #0f1c17;
+  --card: #14251d;
+  --line: rgba(198, 244, 218, 0.13);
+  --text: #dcf5e7;
+  --soft: #b9e2cd;
+  --muted: #7fac95;
+  --mint: #68e4a6;
+  --mint-glow: #adf5d2;
+  --mint-soft: #96eac3;
+  --mint-faint: #c6f4da;
+  --mint-mid: #42c082;
+  --mint-deep: #2e9864;
+  --mint-dark: #22744c;
+  --mint-dim: #5c7c6a;
 }
 
 * { box-sizing: border-box; }
@@ -28,7 +27,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--bg);
-  background-image: radial-gradient(1200px 600px at 70% -10%, rgba(238, 123, 108, 0.05), transparent 60%);
+  background-image: radial-gradient(1200px 600px at 70% -10%, rgba(104, 228, 166, 0.05), transparent 60%);
   color: var(--text);
   font-family: var(--sans);
   font-size: 16px;
@@ -36,7 +35,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: rgba(238, 123, 108, 0.35); }
+::selection { background: rgba(104, 228, 166, 0.3); }
 
 /* ---------- nav ---------- */
 
@@ -49,7 +48,7 @@ body {
   justify-content: space-between;
   gap: 16px;
   padding: 14px 28px;
-  background: rgba(15, 17, 22, 0.72);
+  background: rgba(11, 21, 17, 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
@@ -63,7 +62,7 @@ body {
   letter-spacing: 0.01em;
 }
 
-.brand-dot { color: var(--coral); }
+.brand-dot { color: var(--mint); }
 
 .nav-links { display: flex; gap: 22px; flex-wrap: wrap; }
 
@@ -76,7 +75,7 @@ body {
   transition: color 0.15s ease;
 }
 
-.nav-links a:hover { color: var(--coral); }
+.nav-links a:hover { color: var(--mint); }
 
 /* ---------- hero ---------- */
 
@@ -107,7 +106,7 @@ body {
   font-size: 12px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--coral);
+  color: var(--mint);
   margin: 0 0 22px;
 }
 
@@ -176,7 +175,7 @@ body {
   margin: 0 0 22px;
 }
 
-.section h2 em { color: var(--coral); font-style: italic; }
+.section h2 em { color: var(--mint); font-style: italic; }
 
 .body {
   font-size: 17.5px;
@@ -228,12 +227,12 @@ body {
   transition: all 0.15s ease;
 }
 
-.mode-btn:hover { color: var(--text); border-color: rgba(233, 230, 223, 0.3); }
+.mode-btn:hover { color: var(--text); border-color: rgba(198, 244, 218, 0.35); }
 
 .mode-btn.active {
-  color: var(--coral);
-  border-color: rgba(238, 123, 108, 0.6);
-  background: rgba(238, 123, 108, 0.1);
+  color: var(--mint);
+  border-color: rgba(104, 228, 166, 0.6);
+  background: rgba(104, 228, 166, 0.1);
 }
 
 .legend { display: flex; flex-wrap: wrap; gap: 10px 16px; }
@@ -292,7 +291,7 @@ body {
 
 .panel li strong { font-weight: 500; text-align: right; }
 
-.panel li.hi strong { color: var(--coral); }
+.panel li.hi strong { color: var(--mint); }
 
 /* ---------- section 02: loop ---------- */
 
@@ -332,13 +331,13 @@ body {
   font-weight: 600;
   font-size: 44px;
   line-height: 1;
-  color: var(--coral);
+  color: var(--mint);
   margin-bottom: 10px;
 }
 
-.stat:nth-child(2) .num { color: var(--teal); }
-.stat:nth-child(3) .num { color: var(--gold); }
-.stat:nth-child(4) .num { color: var(--sage); }
+.stat:nth-child(2) .num { color: var(--mint-mid); }
+.stat:nth-child(3) .num { color: var(--mint-soft); }
+.stat:nth-child(4) .num { color: var(--mint-deep); }
 
 .stat .lbl { font-size: 13px; color: var(--muted); line-height: 1.45; }
 
@@ -353,12 +352,12 @@ body {
   background: var(--card);
 }
 
-.chip strong { color: var(--coral); font-weight: 600; }
+.chip strong { color: var(--mint); font-weight: 600; }
 
 /* ---------- section 05: essay ---------- */
 
 .essay {
-  border-left: 3px solid var(--coral);
+  border-left: 3px solid var(--mint);
   padding-left: 26px;
   max-width: 680px;
 }
@@ -400,7 +399,7 @@ body {
 
 .thought-form textarea:focus {
   outline: none;
-  border-color: rgba(238, 123, 108, 0.6);
+  border-color: rgba(104, 228, 166, 0.6);
 }
 
 .thought-actions {
@@ -418,12 +417,12 @@ body {
 }
 
 .thought-btn {
-  color: var(--coral);
-  border-color: rgba(238, 123, 108, 0.6);
-  background: rgba(238, 123, 108, 0.1);
+  color: var(--mint);
+  border-color: rgba(104, 228, 166, 0.6);
+  background: rgba(104, 228, 166, 0.1);
 }
 
-.thought-btn:hover { background: rgba(238, 123, 108, 0.2); }
+.thought-btn:hover { background: rgba(104, 228, 166, 0.2); }
 
 .wall-box { height: 340px; }
 
@@ -456,8 +455,8 @@ body {
 }
 
 .resources a:hover {
-  border-color: rgba(238, 123, 108, 0.6);
-  color: var(--coral);
+  border-color: rgba(104, 228, 166, 0.6);
+  color: var(--mint);
 }
 
 /* ---------- footer ---------- */
@@ -479,8 +478,8 @@ footer {
   position: fixed;
   z-index: 60;
   max-width: 260px;
-  background: #1a1f2b;
-  border: 1px solid rgba(233, 230, 223, 0.18);
+  background: #17291f;
+  border: 1px solid rgba(198, 244, 218, 0.18);
   border-radius: 10px;
   padding: 10px 13px;
   font-size: 12.5px;
