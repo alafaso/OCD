@@ -18,6 +18,8 @@
   --mint-deep: #2e9864;
   --mint-dark: #22744c;
   --mint-dim: #5c7c6a;
+  --serif: "Avenir Next", "Avenir";
+  --sans: "Avenir Next", "Avenir";
 }
 
 * { box-sizing: border-box; }
