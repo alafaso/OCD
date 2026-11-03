@@ -15,14 +15,14 @@
   const N = PATIENTS.length;
 
   const COL = {
-    mint: [104, 228, 166],
-    mintGlow: [173, 245, 210],
-    mintSoft: [150, 234, 195],
-    mintFaint: [198, 244, 218],
-    mintMid: [66, 192, 130],
-    mintDeep: [46, 152, 100],
-    mintDark: [34, 116, 76],
-    mintDim: [92, 124, 106],
+    mint: [193, 18, 31],
+    mintGlow: [242, 139, 144],
+    mintSoft: [229, 107, 115],
+    mintFaint: [244, 176, 182],
+    mintMid: [164, 22, 26],
+    mintDeep: [127, 29, 29],
+    mintDark: [107, 15, 26],
+    mintDim: [125, 74, 74],
     text: [220, 245, 231],
   };
 

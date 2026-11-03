@@ -10,14 +10,14 @@
   --text: #dcf5e7;
   --soft: #b9e2cd;
   --muted: #7fac95;
-  --mint: #68e4a6;
-  --mint-glow: #adf5d2;
-  --mint-soft: #96eac3;
-  --mint-faint: #c6f4da;
-  --mint-mid: #42c082;
-  --mint-deep: #2e9864;
-  --mint-dark: #22744c;
-  --mint-dim: #5c7c6a;
+  --mint: #c1121f;
+  --mint-glow: #f28b90;
+  --mint-soft: #e56b73;
+  --mint-faint: #f4b0b6;
+  --mint-mid: #a4161a;
+  --mint-deep: #7f1d1d;
+  --mint-dark: #6b0f1a;
+  --mint-dim: #7d4a4a;
   --serif: "Avenir Next", "Avenir";
   --sans: "Avenir Next", "Avenir";
 }
@@ -29,7 +29,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--bg);
-  background-image: radial-gradient(1200px 600px at 70% -10%, rgba(104, 228, 166, 0.05), transparent 60%);
+  background-image: radial-gradient(1200px 600px at 70% -10%, rgba(193, 18, 31, 0.05), transparent 60%);
   color: var(--text);
   font-family: var(--sans);
   font-size: 16px;
@@ -37,7 +37,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: rgba(104, 228, 166, 0.3); }
+::selection { background: rgba(193, 18, 31, 0.3); }
 
 /* ---------- nav ---------- */
 
@@ -233,8 +233,8 @@ body {
 
 .mode-btn.active {
   color: var(--mint);
-  border-color: rgba(104, 228, 166, 0.6);
-  background: rgba(104, 228, 166, 0.1);
+  border-color: rgba(193, 18, 31, 0.6);
+  background: rgba(193, 18, 31, 0.1);
 }
 
 .legend { display: flex; flex-wrap: wrap; gap: 10px 16px; }
@@ -401,7 +401,7 @@ body {
 
 .thought-form textarea:focus {
   outline: none;
-  border-color: rgba(104, 228, 166, 0.6);
+  border-color: rgba(193, 18, 31, 0.6);
 }
 
 .thought-actions {
@@ -420,11 +420,11 @@ body {
 
 .thought-btn {
   color: var(--mint);
-  border-color: rgba(104, 228, 166, 0.6);
-  background: rgba(104, 228, 166, 0.1);
+  border-color: rgba(193, 18, 31, 0.6);
+  background: rgba(193, 18, 31, 0.1);
 }
 
-.thought-btn:hover { background: rgba(104, 228, 166, 0.2); }
+.thought-btn:hover { background: rgba(193, 18, 31, 0.2); }
 
 .wall-box { height: 340px; }
 
@@ -457,7 +457,7 @@ body {
 }
 
 .resources a:hover {
-  border-color: rgba(104, 228, 166, 0.6);
+  border-color: rgba(193, 18, 31, 0.6);
   color: var(--mint);
 }
 
