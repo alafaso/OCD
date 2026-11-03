@@ -23,7 +23,7 @@
     mintDeep: [127, 29, 29],
     mintDark: [107, 15, 26],
     mintDim: [125, 74, 74],
-    text: [220, 245, 231],
+    text: [240, 240, 240],
   };
 
   const OB_COL = {
